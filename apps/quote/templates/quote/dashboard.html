@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta http-equiv="X-UA-Compatible" content="ie=edge">
+      <title>Quotes</title>
+   </head>
+   <body>
+      <h1>Welcome, {{user.first_name}}!</h1>
+      <a href="/logout">Log Out</a>
+      <hr>
+
+      {% if messages %}
+      <ul class="messages">
+         {% for message in messages %}
+         <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+         {% endfor %}
+      </ul>
+      {% endif %}
+
+      <form action="/create_quote" method="POST">
+         {% csrf_token %}
+         <h2>Contribute a Quote:</h2>
+         <p>Quoted By: <input type="text" name="quoted_by"></p>
+         <p>Message: <textarea name="message"cols="30" rows="10"></textarea></p>
+         <input type="submit" value="Submit">
+      </form>
+     
+      <h2>Quotable Quotes</h2>
+      {% for quote in un_fav %}
+      
+        
+         <p>{{ quote.message }}</p>
+         <p>Posted by <a href="/quote/{{ quote.uploaded_by.id }}">{{ quote.uploaded_by.first_name }}</a></p>
+      
+         <a href="/add_favorites/{{ quote.id }}">Add to My List</a>    
+        
+      {% endfor %}
+
+      <h2>Your Favorites</h2>
+      {% for quote in fav %}
+         
+         <p>{{ quote.message }}</p>
+         <p>Posted by <a href="/quote/{{ quote.uploaded_by.id }}">{{ quote.uploaded_by.first_name }}</a></p>
+      
+         <a href="/un_favorites/{{ quote.id }}">Remove from My List</a>    
+         
+      {% endfor %}
+      
+   </body>
+</html>
+         
+         
